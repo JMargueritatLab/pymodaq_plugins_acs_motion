@@ -1,0 +1,82 @@
+La platine Alio avait des probl�mes � cause du support sans doute tordu.
+C'est r�solu!
+
+##########
+3 Mai 2021
+##########
+
+I-- Communication controller alio et ordinateur.
+____________________________________________
+
+Il ya deux solutions:
+
+Solution 1: RS232 sur la prise J4 COM1 avec un c�ble USB-->serie
+
+Cela fonctionne bien, mais selon le constructeur cela peut entrainer des probl�mes de communication. 
+En r�alit� c'est quand on a beaucoup de moteur en s�rie que ca pose probl�me.
+
+Solution 2: Connection avec un c�ble ethernet en utilisant un adapteur USB--> ethernet.
+
+Ainsi on ajoute une prise "ethernet2", que l'on configure avec l'adresse IP 10.0.0.101 et le masque de sous reseau 255.255.255.0.
+Je fait ce choix pour le pilotage et comme ca je conserve une prise s�rie au cas o�.
+
+J'ai test� le contr�leur et la platine avec le logiciel SPii PLus MMI Application Studio tout est ok.
+
+
+
+II-- Communication en utilisant python
+______________________________________
+
+L'objectif est de piloter la platine en utilisant python et PYMODAD. Il faut donc faire un plugin. 
+Avant tout, je vais faire des tests avec Python.
+
+	a- Communication avec Python
+	----------------------------
+Pour cela je vais utiliserle package ACSpy d�velop� ppar Pete Bachant.
+Github: https://github.com/petebachant/ACSpy
+
+1- Dans un powershell anaconda je cr�e un environement:
+	conda create -n acs_motion
+2- je l'active
+	conda activate acs_motion
+3- j'installe le paquet pip, puis acspy depuis pip
+	conda install pip	y
+	pip install acspy
+
+UNe fois install� je fais les tests en suivant les indications donn�es sur Github.
+je lance ipython
+il faut aussi installer numpy (mon install de base c'est miniconda)
+	conda install numpy
+
+	In [1]: from acspy import acsc
+
+	In [2]: hcomm = acsc.openCommDirect()
+
+	In [3]: acsc.enable(hcomm, 0)
+
+	In [4]: acsc.getMotorState(hcomm,0)
+	Out[4]: {'enabled': True, 'in position': True, 'moving': False, 'accelerating':
+	False}
+
+	In [5]: acsc.closeComm(hcomm)
+
+	In [6]:
+
+
+La m�thode ci dessous fonctionne tr�s bien ya plus qu'� faire un module:
+>>> from acspy.control import Controller
+>>> controller = Controller(contype="ethernet", n_axes=2)
+>>> controller.connect()
+>>> axis0 = controller.axes[0]
+>>> axis0.enable()
+>>> axis0.enabled
+True
+>>> axis0.ptp(500.5)
+>>> axis0.rpos
+500.5
+>>> axis0.disable()
+>>> controller.disconnect()
+
+
+
+
