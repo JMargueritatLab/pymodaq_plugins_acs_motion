@@ -25,20 +25,18 @@ Use this template to create a repository on your account and start the developme
 Authors
 =======
 
-* First Author  (myemail@xxx.org)
-* Other author (myotheremail@xxx.org)
+* Jérémie Margueritat  (jeremie.margueritat@univ-lyon1.fr)
 
 .. if needed use this field
 
     Contributors
     ============
 
-    * First Contributor
-    * Other Contributors
+    * Jérémie Margueritat
 
 .. if needed use this field
 
-  Depending on the plugin type, delete/complete the fields below
+
 
 
 Instruments
@@ -49,27 +47,8 @@ Below is the list of instruments included in this plugin
 Actuators
 +++++++++
 
-* **yyy**: control of yyy actuators
-* **xxx**: control of xxx actuators
+* **ACS motion control**: control up to 8 stages (tested with XY stage Alio AI-CM-6000-XY)
 
-Viewer0D
-++++++++
-
-* **yyy**: control of yyy 0D detector
-* **xxx**: control of xxx 0D detector
-
-Viewer1D
-++++++++
-
-* **yyy**: control of yyy 1D detector
-* **xxx**: control of xxx 1D detector
-
-
-Viewer2D
-++++++++
-
-* **yyy**: control of yyy 2D detector
-* **xxx**: control of xxx 2D detector
 
 
 PID Models
@@ -83,6 +62,6 @@ Extensions
 Installation instructions
 =========================
 
-* PyMoDAQ’s version.
-* Operating system’s version.
-* What manufacturer’s drivers should be installed to make this plugin run?
+* PyMoDAQ’s version: developed with PyMoDAQ 5.0.5
+* Operating system’s version: Windows 11 
+* What manufacturer’s drivers should be installed to make this plugin run: To Be COmpleted
