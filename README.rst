@@ -47,7 +47,9 @@ Below is the list of instruments included in this plugin
 Actuators
 +++++++++
 
-* **ACS motion control**: control up to 8 stages (tested with XY stage Alio AI-CM-6000-XY)
+* **ACS motion control**: control up to 8 stages.
+ It has been developped with ACS motion control unit: SPiiPlusEC, linked with a two axis driver (amplifier) UDMnt. 
+The stages were alio's translation stages  AI-CM-6000-XY   
 
 
 
