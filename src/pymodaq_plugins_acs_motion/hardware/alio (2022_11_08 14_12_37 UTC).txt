@@ -78,5 +78,68 @@ True
 >>> controller.disconnect()
 
 Je dois clarifier si il faut démarrer le logiciel indépendemment. 
+Je viens de redémarrer le système après déplacement. Il semble que la communciation ne se fasse pas correctement. 
+J'essai en initialisant d'abord la patine. 
+l'erreur est la suivante AcscError: 3261: Motion cannot start because the brushless motor is not commutated
 
+avec la library acs on peut faire l'initialisation: acsc.runBuffer(device,1)
+there ie load buffer from file too. 
+In [1]: from acspy.control import Controller
 
+In [2]: device =Controller.connect("ethernet",2)
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+Cell In[2], line 1
+----> 1 device =Controller.connect("ethernet",2)
+
+File ~\miniforge3\envs\pymo5\Lib\site-packages\acspy\control.py:18, in Controller.connect(self, address, port)
+     17 def connect(self, address="10.0.0.100", port=701):
+---> 18     if self.contype == "simulator":
+     19         self.hc = acsc.openCommDirect()
+     20     elif self.contype == "ethernet":
+
+AttributeError: 'str' object has no attribute 'contype'
+
+In [3]: device =Controller("ethernet",2)
+
+In [4]: device.disable_all()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+Cell In[4], line 1
+----> 1 device.disable_all()
+
+File ~\miniforge3\envs\pymo5\Lib\site-packages\acspy\control.py:31, in Controller.disable_all(self, wait)
+     29 """Disables all axes."""
+     30 for a in self.axes:
+---> 31     a.disable()
+
+File ~\miniforge3\envs\pymo5\Lib\site-packages\acspy\control.py:51, in Axis.disable(self, wait)
+     50 def disable(self, wait=acsc.SYNCHRONOUS):
+---> 51     acsc.disable(self.controller.hc, self.axisno, wait)
+
+AttributeError: 'Controller' object has no attribute 'hc'
+
+In [5]: device.connect()
+
+In [6]: device.disable_all()
+
+In [7]: device.enable_all()
+
+In [8]: ax1=device.axes[1]
+
+In [9]: ax1.enabled
+Out[9]: True
+
+In [10]: ax1.ptp(10)
+
+In [11]: ax0=device.axes[0]
+
+In [12]: ax0.ptp(0)
+
+In [13]: ax1.ptp(0)
+
+In [14]: device.disable_all()
+
+In [15]: device.disconnect()
+
+In [16]:
