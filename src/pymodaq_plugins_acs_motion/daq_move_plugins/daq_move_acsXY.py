@@ -49,7 +49,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
     # as  DataActuatorType.float  (or entirely remove the line)
     # At this step I will not use the new data dtyle it might be implemented in the future
 
-    params = [ {'title': 'Controller ID:', 'name', 'controller_id', 'type': 'str', 'value': ', readonly': True}  
+    params = [ {'title': 'Controller ID:', 'name': 'controller_id', 'type': 'str', 'value': '', 'readonly': True,}  
                 ] + comon_parameters_fun(is_multiaxes, axis_names=_axis_names, epsilon=_epsilon)
     # _epsilon is the initial default value for the epsilon parameter allowing pymodaq to know if the controller reached
     # the target value. It is the developer responsibility to put here a meaningful value
@@ -129,16 +129,17 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         initialized: bool
             False if initialization failed otherwise True
         """
-        raise NotImplemented  # TODO when writing your own plugin remove this line and modify the ones below
+        
         self.ini_stage_init(slave_controller=controller)  # will be useful when controller is slave
 
         if self.is_master:  # is needed when controller is master
-            self.controller = PythonWrapperOfYourInstrument(arg1, arg2, ...) #  arguments for instantiation!)
-            # todo: enter here whatever is needed for your controller initialization and eventual
-            #  opening of the communication channel
-
-        info = "Whatever info you want to log"
-        initialized = self.controller.a_method_or_atttribute_to_check_if_init()  # todo
+            self.controller = Controller(contype="ethernet", n_axes=2) 
+            self.controller.connect()  # any object that will control the stages
+            self.controller.enable_all()  # enable all axes
+            #self.controller.axes[self.settings.child('multiaxes', 'axis').value()].enable()
+            
+        info = "Controller connected and axis enabled"
+        initialized = True#self.controller.a_method_or_atttribute_to_check_if_init()  # todo
         return info, initialized
 
     def move_abs(self, value: DataActuator):
