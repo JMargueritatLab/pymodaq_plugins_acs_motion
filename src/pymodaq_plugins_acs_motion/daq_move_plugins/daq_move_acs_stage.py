@@ -7,7 +7,7 @@ from pymodaq_utils.utils import ThreadCommand  # object used to send info back t
 from pymodaq_gui.parameter import Parameter
 
 
-from acspy import control
+from acspy.control import Controller
 
 class DAQ_Move_acs_stage(DAQ_Move_base):
     """ Minimalistic plugin to control ACS motion stages with PyMoDAQ.
