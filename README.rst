@@ -15,29 +15,12 @@ pymodaq_plugins_template
    :target: https://github.com/PyMoDAQ/pymodaq_plugins_thorlabs
    :alt: Publication Status
 
-.. image:: https://github.com/PyMoDAQ/pymodaq_plugins_template/actions/workflows/Test.yml/badge.svg
-    :target: https://github.com/PyMoDAQ/pymodaq_plugins_template/actions/workflows/Test.yml
-
-
-Use this template to create a repository on your account and start the development of your own PyMoDAQ plugin!
-
+PyMoDAQ plugins for the ACS motion control unit.
 
 Authors
 =======
 
 * Jérémie Margueritat  (jeremie.margueritat@univ-lyon1.fr)
-
-.. if needed use this field
-
-    Contributors
-    ============
-
-    * Jérémie Margueritat
-
-.. if needed use this field
-
-
-
 
 Instruments
 ===========
@@ -51,21 +34,10 @@ Actuators
 It has been developped with ACS motion control unit: SPiiPlusEC, linked with a two axis driver (amplifier) UDMnt. 
 The stages were alio's translation stages  AI-CM-6000-XY   
 
-
-
-PID Models
-==========
-
-
-Extensions
-==========
-
-
 Installation instructions
 =========================
 The user as to install the drivers from ACS. He may also need to intialise the stage within the software with the buffer file provided by ACS.
 
 * PyMoDAQ’s version: developed with PyMoDAQ 5.0.5
 * Operating system’s version: Windows 11 
-* What manufacturer’s drivers should be installed to make this plugin run: To Be COmpleted
-
+* The plugin assumes that the acs drivers are installed. 
