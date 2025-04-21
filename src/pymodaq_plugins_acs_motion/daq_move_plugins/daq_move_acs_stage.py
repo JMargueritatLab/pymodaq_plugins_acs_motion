@@ -7,29 +7,27 @@ from pymodaq_utils.utils import ThreadCommand  # object used to send info back t
 from pymodaq_gui.parameter import Parameter
 
 
-class PythonWrapperOfYourInstrument:
-    #  TODO Replace this fake class with the import of the real python wrapper of your instrument
-    pass
+from acspy import control
 
-# TODO:
-# (1) change the name of the following class to DAQ_Move_TheNameOfYourChoice
-# (2) change the name of this file to daq_move_TheNameOfYourChoice ("TheNameOfYourChoice" should be the SAME
-#     for the class name and the file name.)
-# (3) this file should then be put into the right folder, namely IN THE FOLDER OF THE PLUGIN YOU ARE DEVELOPING:
-#     pymodaq_plugins_my_plugin/daq_move_plugins
-class DAQ_Move_Template(DAQ_Move_base):
-    """ Instrument plugin class for an actuator.
+class DAQ_Move_acs_stage(DAQ_Move_base):
+    """ Minimalistic plugin to control ACS motion stages with PyMoDAQ.
     
     This object inherits all functionalities to communicate with PyMoDAQ’s DAQ_Move module through inheritance via
     DAQ_Move_base. It makes a bridge between the DAQ_Move module and the Python wrapper of a particular instrument.
 
-    TODO Complete the docstring of your plugin with:
-        * The set of controllers and actuators that should be compatible with this instrument plugin.
-        * With which instrument and controller it has been tested.
-        * The version of PyMoDAQ during the test.
-        * The version of the operating system.
-        * Installation instructions: what manufacturer’s drivers should be installed to make it run?
-
+    Use the ACSpy package wrapper to communicate with the ACS motion stages. 
+    It may works with up to 8 axes depending the configuration.
+    It does not consider the daisy chain option: only one controller.
+    Only ETHERNET communication is implemented (see ACS manual for configuration).
+    (It has been tested with USB to ethernet adapter).
+    Tested with ACS SPiiPlusEC controller and one drive UDMnt(2 axes).
+    The stages were alio's translation stages  AI-CM-6000-XY.
+    PyMoDAQ version during the test was PyMoDAQ==5.0.5.
+    The operating system used was Windows 11.
+    Installation instructions: ACS drivers must be installed from the manufacturer's.
+    They usually come with the controller and with a "buffer" file for coniguration.
+    
+  
     Attributes:
     -----------
     controller: object
@@ -39,16 +37,19 @@ class DAQ_Move_Template(DAQ_Move_base):
     # TODO add your particular attributes here if any
 
     """
-    is_multiaxes = False  # TODO for your plugin set to True if this plugin is controlled for a multiaxis controller
-    _axis_names: Union[List[str], Dict[str, int]] = ['Axis1', 'Axis2']  # TODO for your plugin: complete the list
-    _controller_units: Union[str, List[str]] = 'mm'  # TODO for your plugin: put the correct unit here, it could be
-    # TODO  a single str (the same one is applied to all axes) or a list of str (as much as the number of axes)
-    _epsilon: Union[float, List[float]] = 0.1  # TODO replace this by a value that is correct depending on your controller
-    # TODO it could be a single float of a list of float (as much as the number of axes)
-    data_actuator_type = DataActuatorType.DataActuator  # wether you use the new data style for actuator otherwise set this
+    is_multiaxes = True
+     # Configured for only to axiss, but can be changed to 8 axes.
+    _axis_names: Union[List[str], Dict[str, int]] = ['Axis1', 'Axis2']
+    # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
+    _controller_units: Union[str, List[str]] = 'mm' 
+     # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
+    _epsilon: Union[float, List[float]] = 0.0001 
+    #data_actuator_type = DataActuatorType.DataActuator  
+    # # wether you use the new data style for actuator otherwise set this
     # as  DataActuatorType.float  (or entirely remove the line)
+    # At this step I will not use the new data dtyle it might be implemented in the future
 
-    params = [   # TODO for your custom plugin: elements to be added here as dicts in order to control your custom stage
+    params = [ {'title': 'Controller ID:', 'name', 'controller_id', 'type': 'str', 'value': ', readonly': True}  
                 ] + comon_parameters_fun(is_multiaxes, axis_names=_axis_names, epsilon=_epsilon)
     # _epsilon is the initial default value for the epsilon parameter allowing pymodaq to know if the controller reached
     # the target value. It is the developer responsibility to put here a meaningful value
