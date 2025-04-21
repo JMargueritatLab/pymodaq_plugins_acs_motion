@@ -41,7 +41,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
      # Configured for only to axiss, but can be changed to 8 axes.
     _axis_names: Union[List[str], Dict[str, int]] = [0, 1]
     # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
-    _controller_units: Union[str, List[str]] = 'mm' 
+    _controller_units: Union[str, List[str]] = ['mm', 'mm'] 
      # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
     _epsilon: Union[float, List[float]] = 0.00001 
     data_actuator_type = DataActuatorType.DataActuator  
@@ -70,7 +70,9 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         float: The position obtained after scaling conversion.
         """
         
-        pos = DataActuator(data=self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].rpos)  
+        pos = DataActuator(
+            data=self.controller.axes[self.axis_value].rpos,
+            unit=self._controller_units[self.axis_value])  
         pos = self.get_position_with_scaling(pos)
         return pos
 
@@ -104,7 +106,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         ## TODO for your custom plugin
         if param.name() == 'axis':
             self.get_actuator_value()  # to update the current position of the axis
-            #self.axis_unit = self.controller.your_method_to_get_correct_axis_unit()
+            #self.axis_unit = 'mm'
             # do this only if you can and if the units are not known beforehand, for instance
             # if the motors connected to the controller are of different type (mm, µm, nm, , etc...)
             # see BrushlessDCMotor from the thorlabs plugin for an exemple
@@ -152,9 +154,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         value = self.check_bound(value)  #if user checked bounds, the defined bounds are applied here
         self.target_value = value
         value = self.set_position_with_scaling(value)  # apply scaling if the user specified one
-        ## TODO for your custom plugin
-        raise NotImplemented  # when writing your own plugin remove this line
-        self.controller.your_method_to_set_an_absolute_value(value.value())  # when writing your own plugin replace this line
+        self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].ptp(value.value())  # when writing your own plugin replace this line
         self.emit_status(ThreadCommand('Update_Status', ['Some info you want to log']))
 
     def move_rel(self, value: DataActuator):
@@ -168,9 +168,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         self.target_value = value + self.current_position
         value = self.set_position_relative_with_scaling(value)
 
-        ## TODO for your custom plugin
-        raise NotImplemented  # when writing your own plugin remove this line
-        self.controller.your_method_to_set_a_relative_value(value.value())  # when writing your own plugin replace this line
+        
+        self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].ptpr(value.value())
         self.emit_status(ThreadCommand('Update_Status', ['Some info you want to log']))
 
     def move_home(self):
