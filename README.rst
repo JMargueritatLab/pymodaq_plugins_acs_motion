@@ -48,7 +48,7 @@ Actuators
 +++++++++
 
 * **ACS motion control**: control up to 8 stages.
- It has been developped with ACS motion control unit: SPiiPlusEC, linked with a two axis driver (amplifier) UDMnt. 
+It has been developped with ACS motion control unit: SPiiPlusEC, linked with a two axis driver (amplifier) UDMnt. 
 The stages were alio's translation stages  AI-CM-6000-XY   
 
 
@@ -63,6 +63,7 @@ Extensions
 
 Installation instructions
 =========================
+The user as to install the drivers from ACS. He may also need to intialise the stage within the software with the buffer file provided by ACS.
 
 * PyMoDAQ’s version: developed with PyMoDAQ 5.0.5
 * Operating system’s version: Windows 11 
