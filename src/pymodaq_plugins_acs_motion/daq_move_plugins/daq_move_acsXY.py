@@ -39,9 +39,9 @@ class DAQ_Move_acsXY(DAQ_Move_base):
     """
     is_multiaxes = True
      # Configured for only to axiss, but can be changed to 8 axes.
-    _axis_names: Union[List[str], Dict[str, int]] = [0, 1]
+    _axis_names: Union[List[str], Dict[str, int]] = {'Axis0':0, 'Axis1':1}
     # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
-    _controller_units: Union[str, List[str]] = ['mm', 'mm'] 
+    _controller_units: Union[str, List[str]] = {'Axis0': 'mm', 'Axis1': 'mm'}
      # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
     _epsilon: Union[float, List[float]] = 0.00001 
     data_actuator_type = DataActuatorType.DataActuator  
@@ -71,8 +71,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         """
         
         pos = DataActuator(
-            data=self.controller.axes[self.axis_value].rpos,
-            unit=self._controller_units[self.axis_value])  
+                    data=self.controller.axes[self.axis_value].rpos,
+                    unit=self.axis_unit)  
         pos = self.get_position_with_scaling(pos)
         return pos
 
@@ -137,8 +137,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
             self.controller = Controller(contype="ethernet", n_axes=2) 
             self.controller.connect()  # any object that will control the stages
             self.controller.enable_all()  # enable all axes
-            #self.controller.axes[self.settings.child('multiaxes', 'axis').value()].enable()
             
+          
         info = "Controller connected and axis enabled"
         initialized = True#self.controller.a_method_or_atttribute_to_check_if_init()  # todo
         return info, initialized
@@ -154,7 +154,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         value = self.check_bound(value)  #if user checked bounds, the defined bounds are applied here
         self.target_value = value
         value = self.set_position_with_scaling(value)  # apply scaling if the user specified one
-        self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].ptp(value.value())  # when writing your own plugin replace this line
+        self.controller.axes[self.axis_value].ptp(value.value())  # when writing your own plugin replace this line
         self.emit_status(ThreadCommand('Update_Status', ['Some info you want to log']))
 
     def move_rel(self, value: DataActuator):
@@ -169,16 +169,13 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         value = self.set_position_relative_with_scaling(value)
 
         
-        self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].ptpr(value.value())
+        self.controller.axes[self.axis_value].ptpr(value.value())
         self.emit_status(ThreadCommand('Update_Status', ['Some info you want to log']))
 
     def move_home(self):
         """Call the reference method of the controller"""
-
-        ## TODO for your custom plugin
-        raise NotImplemented  # when writing your own plugin remove this line
-        self.controller.your_method_to_get_to_a_known_reference()  # when writing your own plugin replace this line
-        self.emit_status(ThreadCommand('Update_Status', ['Some info you want to log']))
+        self.move_abs(DataActuator(data=0, unit=self.axis_unit))
+    
 
     def stop_motion(self):
       """Stop the actuator and emits move_done signal"""
