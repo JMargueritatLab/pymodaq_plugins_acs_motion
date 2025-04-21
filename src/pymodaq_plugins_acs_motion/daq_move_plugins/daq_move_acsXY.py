@@ -39,12 +39,12 @@ class DAQ_Move_acsXY(DAQ_Move_base):
     """
     is_multiaxes = True
      # Configured for only to axiss, but can be changed to 8 axes.
-    _axis_names: Union[List[str], Dict[str, int]] = ['Axis1', 'Axis2']
+    _axis_names: Union[List[str], Dict[str, int]] = [0, 1]
     # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
     _controller_units: Union[str, List[str]] = 'mm' 
      # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
     _epsilon: Union[float, List[float]] = 0.00001 
-    #data_actuator_type = DataActuatorType.DataActuator  
+    data_actuator_type = DataActuatorType.DataActuator  
     # # wether you use the new data style for actuator otherwise set this
     # as  DataActuatorType.float  (or entirely remove the line)
     # At this step I will not use the new data dtyle it might be implemented in the future
@@ -69,9 +69,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         -------
         float: The position obtained after scaling conversion.
         """
-        ## TODO for your custom plugin
-        raise NotImplemented  # when writing your own plugin remove this line
-        pos = DataActuator(data=self.controller.your_method_to_get_the_actuator_value())  # when writing your own plugin replace this line
+        
+        pos = DataActuator(data=self.controller.axes[int(self.settings.child('multiaxes', 'axis').value())].rpos)  
         pos = self.get_position_with_scaling(pos)
         return pos
 
@@ -105,7 +104,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         """
         ## TODO for your custom plugin
         if param.name() == 'axis':
-            self.axis_unit = self.controller.your_method_to_get_correct_axis_unit()
+            self.current_position=self.get_actuator_value()  # to update the current position of the axis
+            #self.axis_unit = self.controller.your_method_to_get_correct_axis_unit()
             # do this only if you can and if the units are not known beforehand, for instance
             # if the motors connected to the controller are of different type (mm, µm, nm, , etc...)
             # see BrushlessDCMotor from the thorlabs plugin for an exemple
