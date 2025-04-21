@@ -38,17 +38,17 @@ class DAQ_Move_acsXY(DAQ_Move_base):
 
     """
     is_multiaxes = True
-     # Configured for only to axiss, but can be changed to 8 axes.
+     # Configured for only two axiss, but can be changed to 8 axes.
     _axis_names: Union[List[str], Dict[str, int]] = {'Axis0':0, 'Axis1':1}
-    # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
+    # Here all axes are translations stages with the same unit if difefrent type of stages are used as for example one translation and one rotation the dict must be updated in consequences.
     _controller_units: Union[str, List[str]] = {'Axis0': 'mm', 'Axis1': 'mm'}
-     # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
+     # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by the appropriate epsilon value.
     _epsilon: Union[float, List[float]] = 0.00001 
     data_actuator_type = DataActuatorType.DataActuator  
     # # wether you use the new data style for actuator otherwise set this
     # as  DataActuatorType.float  (or entirely remove the line)
     # At this step I will not use the new data dtyle it might be implemented in the future
-
+    
     params = [ {'title': 'Controller ID:', 'name': 'controller_id', 'type': 'str', 'value': '', 'readonly': True,}  
                 ] + comon_parameters_fun(is_multiaxes, axis_names=_axis_names, epsilon=_epsilon)
     # _epsilon is the initial default value for the epsilon parameter allowing pymodaq to know if the controller reached
