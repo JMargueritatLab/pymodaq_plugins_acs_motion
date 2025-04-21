@@ -68,3 +68,4 @@ The user as to install the drivers from ACS. He may also need to intialise the s
 * PyMoDAQ’s version: developed with PyMoDAQ 5.0.5
 * Operating system’s version: Windows 11 
 * What manufacturer’s drivers should be installed to make this plugin run: To Be COmpleted
+
