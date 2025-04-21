@@ -43,7 +43,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
     # Here all axes are translations stages(the same one is applied to all axes) if other type of stages are used as for example one translation and one rotation a list of str could be added
     _controller_units: Union[str, List[str]] = 'mm' 
      # WARNING: Please refer to your specific stage to set a meaningful value. If you use different type of stages (ex: translation and rotation) it can be replaced by a list of float.
-    _epsilon: Union[float, List[float]] = 0.0001 
+    _epsilon: Union[float, List[float]] = 0.00001 
     #data_actuator_type = DataActuatorType.DataActuator  
     # # wether you use the new data style for actuator otherwise set this
     # as  DataActuatorType.float  (or entirely remove the line)
@@ -57,7 +57,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
     def ini_attributes(self):
         #  TODO declare the type of the wrapper (and assign it to self.controller) you're going to use for easy
         #  autocompletion
-        self.controller: PythonWrapperOfYourInstrument = None
+        self.controller: Controller = None
 
         #TODO declare here attributes you want/need to init with a default value
         pass
