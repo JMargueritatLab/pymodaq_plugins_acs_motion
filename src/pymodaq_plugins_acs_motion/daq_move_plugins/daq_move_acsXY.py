@@ -90,9 +90,8 @@ class DAQ_Move_acsXY(DAQ_Move_base):
 
     def close(self):
         """Terminate the communication protocol"""
-        ## TODO for your custom plugin
-        raise NotImplemented  # when writing your own plugin remove this line
-        #  self.controller.your_method_to_terminate_the_communication()  # when writing your own plugin replace this line
+        self.controller.disable_all()
+        self.controller.disconnect()
 
     def commit_settings(self, param: Parameter):
         """Apply the consequences of a change of value in the detector settings
@@ -104,7 +103,7 @@ class DAQ_Move_acsXY(DAQ_Move_base):
         """
         ## TODO for your custom plugin
         if param.name() == 'axis':
-            self.current_position=self.get_actuator_value()  # to update the current position of the axis
+            self.get_actuator_value()  # to update the current position of the axis
             #self.axis_unit = self.controller.your_method_to_get_correct_axis_unit()
             # do this only if you can and if the units are not known beforehand, for instance
             # if the motors connected to the controller are of different type (mm, µm, nm, , etc...)
