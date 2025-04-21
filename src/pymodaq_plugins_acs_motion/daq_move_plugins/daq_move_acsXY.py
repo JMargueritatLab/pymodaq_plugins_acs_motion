@@ -9,7 +9,7 @@ from pymodaq_gui.parameter import Parameter
 
 from acspy.control import Controller
 
-class DAQ_Move_acsXY(DAQ_Move_base):
+class DAQ_Move_AcsXY(DAQ_Move_base):
     """ Minimalistic plugin to control ACS motion stages with PyMoDAQ.
     
     This object inherits all functionalities to communicate with PyMoDAQ’s DAQ_Move module through inheritance via
