@@ -25,6 +25,10 @@ class Controller(object):
     def serial_number(self):
         """Returns the serial number of the controller."""
         return acsc.getSerialNumber(self.hc)
+    
+    def run_buffer(self, buffer_number=1):
+        """Loads a buffer file."""
+        acsc.runBuffer(self.hc, buffer_number)
 
     def get_axes_count(self):
         """Returns the number of axes controlled by the controller."""
