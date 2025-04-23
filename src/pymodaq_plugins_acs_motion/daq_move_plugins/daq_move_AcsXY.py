@@ -6,8 +6,8 @@ from pymodaq.control_modules.move_utility_classes import (DAQ_Move_base, comon_p
 from pymodaq_utils.utils import ThreadCommand  # object used to send info back to the main thread
 from pymodaq_gui.parameter import Parameter
 
-
-from acspy.control import Controller
+from hardware.acscontrol import Controller  # ACS controller wrapper
+#from acspy.control import Controller
 
 class DAQ_Move_AcsXY(DAQ_Move_base):
     """ Minimalistic plugin to control ACS motion stages with PyMoDAQ.
