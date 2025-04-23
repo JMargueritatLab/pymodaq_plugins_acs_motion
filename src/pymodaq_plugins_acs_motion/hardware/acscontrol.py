@@ -22,6 +22,14 @@ class Controller(object):
         elif self.contype == "ethernet":
             self.hc = acsc.openCommEthernetTCP(address=address, port=port)
 
+    def serial_number(self):
+        """Returns the serial number of the controller."""
+        return acsc.getSerialNumber(self.hc)
+
+    def get_axes_count(self):
+        """Returns the number of axes controlled by the controller."""
+        return len(self.axes)
+
     def enable_all(self, wait=acsc.SYNCHRONOUS):
         """Enables all axes."""
         for a in self.axes:
