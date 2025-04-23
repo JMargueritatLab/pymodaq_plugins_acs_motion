@@ -139,7 +139,7 @@ class DAQ_Move_AcsXY(DAQ_Move_base):
             self.controller.connect()  # any object that will control the stages
             self.controller.enable_all()  # enable all axes
             self.settings['serial_num']=self.controller.serial_number()
-            self.controller.run_buffer(1)  # load the buffer file (it is needed to configure the controller)
+            self.controller.load_buffer()  # load the buffer file (it is needed to configure the controller)
             
           
         info = "Controller connected and axis enabled"

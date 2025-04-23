@@ -30,6 +30,14 @@ class Controller(object):
         """Loads a buffer file."""
         acsc.runBuffer(self.hc, buffer_number)
 
+    def load_buffer(self, buffer_number=1, program_name="buffer"):
+        """Loads a buffer file."""
+        acsc.loadBuffer(self.hc, buffer_number, program_name)
+
+    def stop_buffer(self, buffer_number=1):
+        """Stops a buffer file."""
+        acsc.stopBuffer(self.hc, buffer_number)
+
     def get_axes_count(self):
         """Returns the number of axes controlled by the controller."""
         return len(self.axes)
