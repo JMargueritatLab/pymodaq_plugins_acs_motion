@@ -37,7 +37,7 @@ The stages were alio's translation stages  AI-CM-6000-XY
 
 Installation instructions
 =========================
-The user as to install the drivers from ACS. He may also need to intialise the stage within the software with the buffer file provided by ACS.
+The user as to install the drivers from ACS. He may also need to intialise the stage within the software with the buffer file provided by ACS. In this new release, the plugin is able to load the buffer file automatically during initialization. Users are encouraged to check the compatibility of their ACS hardware with the latest version of the plugin. Additionally, it is recommended to refer to the ACS documentation for any specific setup requirements.
 
 * PyMoDAQ’s version: developed with PyMoDAQ 5.0.5
 * Operating system’s version: Windows 11 
