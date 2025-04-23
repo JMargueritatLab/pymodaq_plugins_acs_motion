@@ -49,8 +49,10 @@ class DAQ_Move_AcsXY(DAQ_Move_base):
     # as  DataActuatorType.float  (or entirely remove the line)
     # At this step I will not use the new data dtyle it might be implemented in the future
     
-    params = [ {'title': 'Serial Number:', 'name': 'serial_num', 'type': 'str', 
-                'value': '', 'readonly': True,}  
+    params = [ {'title': 'Serial Number', 'name': 'serial_num', 'type': 'str', 
+                'value': '', 'readonly': True,},
+                {'title': 'Buffer Number', 'name': 'buff_num', 'type': 'int', 
+                'value': 1, 'limits': [0, 9],}  
                 ] + comon_parameters_fun(is_multiaxes, axis_names=_axis_names, epsilon=_epsilon)
     # _epsilon is the initial default value for the epsilon parameter allowing pymodaq to know if the controller reached
     # the target value. It is the developer responsibility to put here a meaningful value
@@ -139,7 +141,7 @@ class DAQ_Move_AcsXY(DAQ_Move_base):
             self.controller.connect()  # any object that will control the stages
             self.controller.enable_all()  # enable all axes
             self.settings['serial_num']=self.controller.serial_number()
-            self.controller.load_buffer()  # load the buffer file (it is needed to configure the controller)
+            self.controller.load_buffer(self.settings['buff_num'])  # load the buffer file (it is needed to configure the controller)
             
           
         info = "Controller connected and axis enabled"
